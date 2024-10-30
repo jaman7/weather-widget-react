@@ -1,0 +1,31 @@
+html {
+  font-weight: 400;
+  text-rendering: optimizelegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-roboto);
+  font-feature-settings: normal;
+  -moz-osx-font-smoothing: grayscale !important;
+  -webkit-font-smoothing: subpixel-antialiased !important;
+  color: var(--color-primary);
+  font-size: 16px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.main-section {
+  min-height: 100%;
+  padding-top: 39px;
+}
+
+.section {
+  width: 100%;
+  padding-right: calc(1.5rem * 0.5);
+  padding-left: calc(1.5rem * 0.5);
+  margin-right: auto;
+  margin-left: auto;
+}

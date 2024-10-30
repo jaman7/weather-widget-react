@@ -1,0 +1,25 @@
+.banner {
+  background: url("https://openweathermap.org/themes/openweathermap/assets/img/autumn_banner_main_page.jpg") no-repeat;
+  background-position-x: 0%;
+  background-position-y: 0%;
+  background-size: auto;
+  background-size: cover;
+  background-position: center;
+  min-height: 250px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &-content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
+.weather-map-img {
+  background: url("https://openweathermap.org/themes/openweathermap/assets/img/Open-weather-main-page.png") no-repeat;
+  background-size: cover;
+  min-height: 200px;
+}

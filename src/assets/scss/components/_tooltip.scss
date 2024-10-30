@@ -1,0 +1,15 @@
+.p-tooltip {
+  &-text {
+    box-shadow: none;
+    background-color: var(--color-grey);
+    color: var(--color-blue);
+    font-size: 14px;
+    padding: 4px;
+  }
+
+  &-top {
+    & .p-tooltip-arrow {
+      border-top-color: var(--color-grey);
+    }
+  }
+}

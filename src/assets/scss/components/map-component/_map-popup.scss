@@ -1,0 +1,29 @@
+.ol-popup {
+  position: absolute;
+  background-color: var(--color-white);
+  padding: 5px 42px 5px 5px;
+  border-radius: 5px;
+  min-width: 150px;
+  font-size: 12px;
+  color: var(--color-orange);
+  width: max-content;
+  box-shadow: 0 0 6px 0 var(--shadow-color);
+
+  .text {
+    margin-bottom: 0.1rem;
+  }
+
+  .button-close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+
+    .close-icon {
+      font-size: 16px;
+      color: var(--color-orange);
+    }
+  }
+}

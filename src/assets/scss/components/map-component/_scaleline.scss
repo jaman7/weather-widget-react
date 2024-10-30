@@ -1,0 +1,35 @@
+.map-component {
+  & .main-map {
+    & .ol-scale-step-text,
+    & .ol-scale-text {
+      color: var(--color-primary);
+    }
+  }
+
+  & .scaleline {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    z-index: 0;
+
+    & .ol-scale-line {
+      bottom: 0;
+      position: initial;
+    }
+
+    & .ol-scale-line-inner {
+      width: auto !important;
+      text-align: left !important;
+      background: transparent !important;
+      border-radius: 0;
+      bottom: initial !important;
+      left: initial !important;
+      padding: 0;
+    }
+
+    & .ol-scale-step-text,
+    & .ol-scale-text {
+      text-shadow: none;
+    }
+  }
+}

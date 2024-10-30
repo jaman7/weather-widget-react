@@ -1,0 +1,73 @@
+.widget {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 5px;
+  font-family: var(--font-roboto);
+  cursor: pointer;
+
+  &-container {
+    display: flex;
+  }
+
+  & .city,
+  & .temperature,
+  & .description {
+    text-align: center;
+    color: var(--color-orange);
+    font-size: 1.5rem;
+  }
+
+  & .temperature {
+    font-size: 1.4rem;
+  }
+
+  & .description {
+    font-size: 1.2rem;
+  }
+
+  & .img-fluid {
+    max-height: 120px;
+  }
+}
+
+.progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  & .circular-chart {
+    width: 50px;
+    height: 50px;
+    transform: rotate(-90deg);
+    display: inline-block;
+
+    & .circle {
+      fill: none;
+      stroke-width: 3;
+      stroke: var(--color-orange);
+      stroke-linecap: round;
+      transition: stroke-dasharray 1s ease-in-out;
+    }
+  }
+
+  & .countdown {
+    margin-top: -36px;
+    font-size: 1.2rem;
+    color: var(--color-orange);
+  }
+}
+
+.title {
+  font-size: 12px;
+  color: var(--color-orange);
+  line-height: initial;
+  margin-bottom: 0.5rem;
+}

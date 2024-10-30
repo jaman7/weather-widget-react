@@ -1,0 +1,89 @@
+$button-round-size-48: 48px;
+$button-round-size-24: 24px;
+$button-round-font-size-24: 24px;
+$button-round-font-size-12: 12px;
+
+.button-component {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  font-weight: bold;
+  transition:
+    background-color 0.3s ease-in-out,
+    color 0.3s ease-in-out;
+  color: var(--color-orange);
+  font-size: 14px;
+  font-family: var(--font-roboto);
+
+  &:not(:disabled) {
+    &:hover {
+      outline: none;
+      box-shadow: none;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+
+  &.default-button {
+    padding: 8px 97px;
+    border-radius: 14px;
+
+    &:hover {
+      outline: none;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &-small {
+      padding: 5px 3rem !important;
+    }
+  }
+
+  &.round {
+    background-color: transparent;
+    border-radius: 50%;
+    min-width: $button-round-size-24;
+    min-height: $button-round-size-24;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 0 6px 0 var(--shadow-color) !important;
+
+    i {
+      font-size: $button-round-font-size-12;
+    }
+
+    &.s32 {
+      min-width: $button-round-size-48 - 16;
+      min-height: $button-round-size-48 - 16;
+
+      i {
+        font-size: $button-round-font-size-24 - 4;
+      }
+    }
+
+    &:hover,
+    &:focus {
+      & i svg * {
+        fill: currentcolor;
+        stroke: currentcolor;
+      }
+    }
+  }
+}
+
+@keyframes button-blinke-animate {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.2;
+  }
+}

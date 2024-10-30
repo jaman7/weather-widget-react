@@ -1,0 +1,16 @@
+.map-component {
+  .mouseposition-control {
+    background-color: transparent;
+    border: 0;
+    color: var(--color-primary);
+    font-size: 0.85rem;
+    bottom: auto;
+  }
+
+  .mouse-position {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 0;
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "common": {
+    "buttons": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "save": "Save",
+      "view": "Browse",
+      "add": "Add"
+    },
+    "mapData": {
+      "buttons": {
+        "home": "Center",
+        "zoomIn": "Zoom In",
+        "zoomOut": "Zoom Out",
+        "close": "Close"
+      },
+      "sidebar": {
+        "controls": "Controls",
+        "weatherConditions": "Weather Conditions",
+        "styleTile": "Style Tile"
+      }
+    }
+  }
+}
