@@ -1,3 +1,133 @@
+ProgressCircle.tsx
+const ProgressCircle: React.FC<{ title: string; progress: number; countdown: number }> = ({ title, progress, countdown }) => (
+  <div className="progress">
+    <span className="title">{title}</span>
+
+    <svg viewBox="0 0 36 36" className="circular-chart">
+      <path
+        className="circle"
+        strokeDasharray={`${progress}, 100`}
+        d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831"
+      />
+    </svg>
+
+    <span className="countdown">{countdown}s</span>
+  </div>
+);
+
+export default ProgressCircle;
+
+
+WeatherWidget.const.tsx
+export const API_URL = 'https://api.openweathermap.org/data/2.5/weather';
+
+
+weatherWidget.model.tsx
+export interface IWeatherMain {
+  temp: number;
+}
+
+export interface IWeatherDescription {
+  description: string;
+  icon: string;
+}
+
+export interface IWeatherResponse {
+  id: number;
+  name: string;
+  main: IWeatherMain;
+  weather: IWeatherDescription[];
+}
+
+export interface IWeatherData {
+  id?: number;
+  city?: string;
+  temp?: number;
+  description?: string;
+  icon?: string;
+}
+
+
+WeatherWidget.scss
+.widget {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 5px;
+  font-family: var(--font-roboto);
+  cursor: pointer;
+  align-self: center;
+
+  &-container {
+    display: flex;
+  }
+
+  & .city,
+  & .temperature,
+  & .description {
+    text-align: center;
+    color: var(--color-orange);
+    font-size: 1.5rem;
+  }
+
+  & .temperature {
+    font-size: 1.4rem;
+  }
+
+  & .description {
+    font-size: 1.2rem;
+  }
+
+  & .img-fluid {
+    max-height: 120px;
+  }
+}
+
+.progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  & .circular-chart {
+    width: 50px;
+    height: 50px;
+    transform: rotate(-90deg);
+    display: inline-block;
+
+    & .circle {
+      fill: none;
+      stroke-width: 3;
+      stroke: var(--color-orange);
+      stroke-linecap: round;
+      transition: stroke-dasharray 1s ease-in-out;
+    }
+  }
+
+  & .countdown {
+    margin-top: -36px;
+    font-size: 1.2rem;
+    color: var(--color-orange);
+  }
+}
+
+.title {
+  font-size: 12px;
+  color: var(--color-orange);
+  line-height: initial;
+  margin-bottom: 0.5rem;
+}
+
+
+WeatherWidget.tsx
 import React, { useState, useEffect, useMemo } from 'react';
 import ProgressCircle from './ProgressCircle';
 import { API_URL } from './WeatherWidget.const';
@@ -29,9 +159,6 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({ cities, className }) => {
     () => ((CITY_SELECTION_INTERVAL_SECONDS - (tick % CITY_SELECTION_INTERVAL_SECONDS)) / CITY_SELECTION_INTERVAL_SECONDS) * 100,
     [tick]
   );
-
-  const refreshCountdown = useMemo(() => REFRESH_INTERVAL_SECONDS - (tick % REFRESH_INTERVAL_SECONDS), [tick]);
-  const citySelectionCountdown = useMemo(() => CITY_SELECTION_INTERVAL_SECONDS - (tick % CITY_SELECTION_INTERVAL_SECONDS), [tick]);
 
   const fetchWeatherData = async (cities: string[]): Promise<IWeatherData[]> => {
     try {
@@ -97,8 +224,16 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({ cities, className }) => {
   return (
     <div className={'widget-container' + ' ' + className}>
       <div className="progress-container">
-        <ProgressCircle title="Next to refresh" progress={refreshProgress} countdown={refreshCountdown} />
-        <ProgressCircle title="Next to random city" progress={citySelectionProgress} countdown={citySelectionCountdown} />
+        <ProgressCircle
+          title="Next to refresh"
+          progress={refreshProgress}
+          countdown={REFRESH_INTERVAL_SECONDS - (tick % REFRESH_INTERVAL_SECONDS)}
+        />
+        <ProgressCircle
+          title="Next to random city"
+          progress={citySelectionProgress}
+          countdown={CITY_SELECTION_INTERVAL_SECONDS - (tick % CITY_SELECTION_INTERVAL_SECONDS)}
+        />
       </div>
 
       {weatherData?.map(city => (
@@ -116,3 +251,5 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({ cities, className }) => {
 };
 
 export default WeatherWidget;
+
+
