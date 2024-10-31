@@ -13,7 +13,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "prettier:format": "prettier --write --html-whitespace-sensitivity ignore src/**/*{.tsx,.ts,.js,.jsx,.json,.css,.scss,.html}",
-    "prepare": "husky"
+    "prepare": "husky .husky"
   },
   "lint-staged": {
     "*.{ts,tsx}": "eslint . --ext ts,tsx --fix",
