@@ -21,3 +21,6 @@ package-lock.json
 *.njsproj
 *.sln
 *.sw?
+
+# Husky
+.husky/_
