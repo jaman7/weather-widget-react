@@ -46,7 +46,7 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({ cities, className }) => {
 
       const responses = await axios.all(requests);
       return responses.map(response => {
-        const { id, name, main, weather } = response.data;
+        const { id, name, main, weather } = response?.data || {};
         return {
           id,
           city: name ?? '',
