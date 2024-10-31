@@ -1,5 +1,3 @@
 {
-  "{,src/**/}*.{md,json,tsx,ts,js,jsx,css,scss,yml}": [
-    "prettier --write"
-  ]
+  '{,src/**/}*.{md,json,ts,tsx,js,jsx,css,scss,html,yml}': ['git add']
 }
