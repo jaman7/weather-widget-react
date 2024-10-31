@@ -13,7 +13,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "prettier:format": "prettier --write --html-whitespace-sensitivity ignore src/**/*{.tsx,.ts,.js,.jsx,.json,.css,.scss,.html}",
-    "prepare": "husky install .husky"
+    "prepare": "husky .husky"
   },
   "lint-staged": {
     "{,src/**/}*.{md,json,ts,tsx,js.jsx,css,scss,yml,html}": [
@@ -71,7 +71,7 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-react-refresh": "^0.4.5",
-    "husky": "^9.1.5",
+    "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
     "path": "^0.12.7",
     "postcss": "^8.4.35",
