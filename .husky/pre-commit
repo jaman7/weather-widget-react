@@ -1,2 +1,1 @@
-mkdir -p .husky
-echo '#!/bin/sh\n. "$(dirname "$0")/_/husky.sh"\n\nnpx lint-staged' > .husky/pre-commit
+#!/bin/sh\n. "$(dirname "$0")/_/husky.sh"\n\nnpx lint-staged
