@@ -132,10 +132,18 @@ const MapPopup: React.FC<MapPopupProps> = ({ viewMap }) => {
       </Button>
       {weatherData && (
         <div>
-          <p className="text">Temperature: {weatherData.temp}°C</p>
-          <p className="orange-text m-0">Wind: {weatherData.wind} m/s</p>
-          <p className="orange-text m-0">Cloud cover: {weatherData.clouds}%</p>
-          <p className="orange-text m-0">Pressure: {weatherData.pressure} hPa</p>
+          <p className="text">
+            Temperature: <span>{weatherData.temp}°C</span>
+          </p>
+          <p className="text">
+            Wind: <span>{weatherData.wind} m/s</span>
+          </p>
+          <p className="text">
+            Cloud cover: <span>{weatherData.clouds}%</span>
+          </p>
+          <p className="text">
+            Pressure: <span>{weatherData.pressure} hPa</span>
+          </p>
         </div>
       )}
     </div>

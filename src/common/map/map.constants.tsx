@@ -3,7 +3,7 @@ import { TypeEPSG } from './Map.enums';
 
 const { EPSG3857 } = TypeEPSG;
 
-export const API_KEY = '33e67a9b2d05b12d29b27e39b1d4719a';
+export const API_KEY = '2a4f75e7ac73979b61b5469c8447c642';
 
 export const ViewOptions = {
   center: fromLonLat([-73.935242, 40.73061]),
