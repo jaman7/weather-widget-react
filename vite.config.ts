@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import sass from 'sass';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr';
+import checker from 'vite-plugin-checker';
 
 export default defineConfig({
   plugins: [
@@ -16,6 +17,9 @@ export default defineConfig({
     }),
     tsconfigPaths(),
     svgr({ include: '**/*.svgr.svg' }),
+    checker({
+      typescript: true,
+    }),
   ],
   css: {
     preprocessorOptions: {

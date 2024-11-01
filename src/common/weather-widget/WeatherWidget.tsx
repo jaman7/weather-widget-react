@@ -35,7 +35,7 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({ cities, className }) => {
 
   const fetchWeatherData = async (cities: string[]): Promise<IWeatherData[]> => {
     try {
-      const requests = cities.map(city => {
+      const requests = cities.map((city) => {
         const queryParams = toHttpParams({
           q: city,
           appid: API_KEY,
@@ -45,7 +45,7 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({ cities, className }) => {
       });
 
       const responses = await axios.all(requests);
-      return responses.map(response => {
+      return responses.map((response) => {
         const { id, name, main, weather } = response?.data || {};
         return {
           id,
@@ -81,7 +81,7 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({ cities, className }) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTick(prevTick => prevTick + 1);
+      setTick((prevTick) => prevTick + 1);
 
       if (tick % REFRESH_INTERVAL_SECONDS === 0) updateWeatherData();
       if (tick % CITY_SELECTION_INTERVAL_SECONDS === 0) updateSelectedCities();
@@ -101,7 +101,7 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({ cities, className }) => {
         <ProgressCircle title="Next to random city" progress={citySelectionProgress} countdown={citySelectionCountdown} />
       </div>
 
-      {weatherData?.map(city => (
+      {weatherData?.map((city) => (
         <div className={'widget'} key={city.id} onClick={() => openCity(city.id)}>
           <h3 className="city">{city.city}</h3>
           <div className="flex-center">
