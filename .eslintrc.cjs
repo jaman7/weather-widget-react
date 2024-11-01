@@ -101,6 +101,8 @@ module.exports = {
     'import/extensions': 'off',
     'import/no-named-as-default': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'warn',
+    '@typescript-eslint/no-empty-function': 'warn',
   },
   overrides: [
     {

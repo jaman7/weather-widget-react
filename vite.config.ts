@@ -20,7 +20,18 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
+        api: 'modern-compiler',
+        quietDeps: true,
+        silenceDeprecations: ['mixed-decls', 'color-functions', 'global-builtin', 'import'],
         implementation: sass,
+      },
+    },
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
       },
     },
   },
