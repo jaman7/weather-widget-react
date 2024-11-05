@@ -8,7 +8,7 @@
     "npm": ">=9.5.0"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "cross-env BROWSER=chrome vite --open",
     "build": "tsc && vite build",
     "test": "react-scripts test",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
@@ -61,6 +61,7 @@
     "@typescript-eslint/eslint-plugin": "^8.12.2",
     "@typescript-eslint/parser": "^8.12.2",
     "@vitejs/plugin-react": "^4.3.3",
+    "cross-env": "^7.0.3",
     "eslint": "^9.13.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^18.0.0",

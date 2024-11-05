@@ -14,6 +14,7 @@ import MapLegend from './components/map-legend/MapLegend';
 import MapControls from './components/btn-controls/MapControls';
 import { TileLayerBackground } from './components/btn-controls/MapControls.config';
 import MapPopup from './components/MapPopup';
+import MapSearch from './components/MapSearch';
 
 interface MapComponentProps {
   height?: string;
@@ -63,7 +64,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ height = '50vh' }) => {
 
   useEffect(() => {
     if (viewMap && selectedTileLayerBackground !== '') {
-      const tileSource = TileLayerBackground?.find(el => el?.name === selectedTileLayerBackground)?.source ?? undefined;
+      const tileSource = TileLayerBackground?.find((el) => el?.name === selectedTileLayerBackground)?.source ?? undefined;
       const layersTile = viewMap?.getLayers()?.getArray()?.[0] as TileLayer;
       const id = layersTile.get('id');
       if (layersTile && id === 1) {
@@ -84,6 +85,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ height = '50vh' }) => {
             <Scaleline viewMap={viewMap} />
             <MapPopup viewMap={viewMap} />
             <MapLegend legend={selectedTileLayer} />
+            <MapSearch viewMap={viewMap} />
           </>
         )}
       </div>

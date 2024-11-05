@@ -76,7 +76,6 @@ export const TileLayerBackground: ISidebarConfig[] = [
     source: new OSM(),
     type: 'radio-item',
   },
-
   {
     value: 1,
     checked: true,

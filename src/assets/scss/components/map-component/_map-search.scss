@@ -1,0 +1,66 @@
+.map-search {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 0;
+  width: 100%;
+  max-width: 300px;
+  font-family: var(--font-roboto);
+  font-size: 12px;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px var(--shadow-color);
+
+  & .input-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    border: 1px solid var(--color-orange);
+    border-radius: 0.5rem;
+    padding: 0.25rem;
+    background-color: var(--color-white-sheer);
+
+    & input {
+      width: 100%;
+      border: none;
+      outline: none;
+      padding: 1px;
+      padding-right: 8px;
+      color: var(--color-primary);
+      background-color: var(--color-white-sheer);
+    }
+  }
+
+  & .suggestions-list {
+    margin-top: 2px;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid var(--color-orange);
+    border-radius: 0.5rem;
+    background-color: var(--color-white-sheer);
+    box-shadow: 0 2px 8px var(--shadow-color);
+    list-style: none;
+    padding: 0;
+    width: auto;
+    max-width: 100%;
+
+    & li {
+      padding: 0.25rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--color-orange);
+      }
+    }
+  }
+
+  & .clear-icon {
+    cursor: pointer;
+    color: var(--color-orange);
+    font-size: 20px;
+  }
+}
+
+.scroll {
+  @extend %scrol-v;
+  @extend %scrol-h;
+}
