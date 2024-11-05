@@ -7,3 +7,8 @@ export enum MapSourceClass {
   MOUSE_POSITION_CONTROL = 'mouseposition-control',
   NBSP = '&nbsp;',
 }
+
+export enum RgbFnStrings {
+  PRE_DATA_RGBA = 'rgba',
+  ALPHA_MSG_ERR = 'alpha is not correct!',
+}

@@ -7,7 +7,6 @@ import { OSM } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
 import { defaults as defaultControls } from 'ol/control';
 import { MapProvider, useMapContext } from './MapContext';
-import { ViewOptions } from './map.constants';
 import CoordinatePosition from './components/CoordinatePosition';
 import Scaleline from './components/Scaleline';
 import MapLegend from './components/map-legend/MapLegend';
@@ -15,6 +14,7 @@ import MapControls from './components/btn-controls/MapControls';
 import { TileLayerBackground } from './components/btn-controls/MapControls.config';
 import MapPopup from './components/MapPopup';
 import MapSearch from './components/MapSearch';
+import { ViewOptions } from './map.constants';
 
 interface MapComponentProps {
   height?: string;

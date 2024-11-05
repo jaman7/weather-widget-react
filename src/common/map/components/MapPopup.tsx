@@ -53,6 +53,7 @@ const MapPopup: React.FC<MapPopupProps> = ({ viewMap }) => {
       const handleMapClick = async (event: any) => {
         setWeatherData?.({});
         const { coordinate } = event;
+
         const [lon, lat] = toLonLat(coordinate);
 
         http
@@ -62,7 +63,7 @@ const MapPopup: React.FC<MapPopupProps> = ({ viewMap }) => {
             appid: API_KEY,
             units: 'metric',
           })
-          .then(data => {
+          .then((data) => {
             const { id, wind, main, clouds } = data || {};
             setWeatherData?.({
               id,

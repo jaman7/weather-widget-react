@@ -2,9 +2,9 @@ import { OSM, XYZ } from 'ol/source';
 import TileLayer from 'ol/layer/Tile';
 import { ButtonsControl, MapButtonsTooltip } from './MapControls.enums';
 import { ISidebarConfig } from './MapControls.models';
-import { API_KEY } from 'common/map/map.constants';
 import { FaHome, FaPlusCircle, FaMinusCircle } from 'react-icons/fa';
 import { IconType } from 'react-icons';
+import { API_KEY } from 'common/map/map.constants';
 
 const { BTN_HOME, BTN_ZOOM_IN, BTN_ZOOM_OUT } = ButtonsControl;
 const { HOME_TOOLTIP, ZOOM_IN_TOOLTIP, ZOOM_OUT_TOOLTIP } = MapButtonsTooltip;

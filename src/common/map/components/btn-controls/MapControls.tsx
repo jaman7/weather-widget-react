@@ -31,7 +31,7 @@ const MapControls: React.FC<IMapControlsProps> = ({ mapView }) => {
 
   useEffect(() => {
     if (mapView && selectedTileLayer) {
-      const currentTileLayer = (MapsTilleLayers?.find(el => el?.name === selectedTileLayer)?.tile as TileLayer<XYZ>) ?? undefined;
+      const currentTileLayer = (MapsTilleLayers?.find((el) => el?.name === selectedTileLayer)?.tile as TileLayer<XYZ>) ?? undefined;
       currentTileLayer?.set?.('id', 10);
       if (currentTileLayer) {
         mapView?.addLayer?.(currentTileLayer);
@@ -42,8 +42,8 @@ const MapControls: React.FC<IMapControlsProps> = ({ mapView }) => {
   }, [mapView]);
 
   const updateSelectedTileLayer = (): void => {
-    const currentTileLayer = (MapsTilleLayers?.find(el => el?.name === selectedTileLayer)?.tile as TileLayer<XYZ>) ?? undefined;
-    mapView?.getLayers()?.forEach(layer => {
+    const currentTileLayer = (MapsTilleLayers?.find((el) => el?.name === selectedTileLayer)?.tile as TileLayer<XYZ>) ?? undefined;
+    mapView?.getLayers()?.forEach((layer) => {
       if (layer === currentTileLayer && layer.get('id') === 10 && layer instanceof TileLayer) {
         const source = layer.getSource();
         if (source instanceof XYZ) source.refresh();
@@ -61,9 +61,9 @@ const MapControls: React.FC<IMapControlsProps> = ({ mapView }) => {
   };
 
   const onWeatherLayerChange = (value: string): void => {
-    const weatherTile = MapsTilleLayers.find(el => el?.name === value)?.tile as TileLayer<XYZ>;
+    const weatherTile = MapsTilleLayers.find((el) => el?.name === value)?.tile as TileLayer<XYZ>;
 
-    MapsTilleLayers?.forEach(layer => {
+    MapsTilleLayers?.forEach((layer) => {
       if (mapView?.getLayers().getArray().includes(layer.tile)) mapView?.removeLayer(layer.tile);
     });
 
@@ -127,7 +127,7 @@ const MapControls: React.FC<IMapControlsProps> = ({ mapView }) => {
                         inputId={layer.name}
                         name="category"
                         value={layer.name}
-                        onChange={e => onLayerChange(e.value)}
+                        onChange={(e) => onLayerChange(e.value)}
                         checked={
                           (item.typeCheckbox === 'tile' && selectedTileLayerBackground === layer.name) ||
                           (item.typeCheckbox === 'weather' && selectedTileLayer === layer.name)

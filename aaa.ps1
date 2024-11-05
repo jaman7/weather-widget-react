@@ -1,1 +1,0 @@
-Get-ChildItem -Path src/assets/scss -Recurse -Include *.scss, *.sass | ForEach-Object { sass-migrator $_.FullName }

@@ -3,7 +3,6 @@ import ProgressCircle from './ProgressCircle';
 import { API_URL } from './WeatherWidget.const';
 import { IWeatherData, IWeatherResponse } from './weatherWidget.model';
 import './WeatherWidget.scss';
-import { API_KEY } from 'common/map/map.constants';
 import axios from 'axios';
 import { toHttpParams } from 'core/http/http.utils';
 
@@ -14,6 +13,7 @@ interface WeatherWidgetProps {
 
 const REFRESH_INTERVAL_SECONDS = 10;
 const CITY_SELECTION_INTERVAL_SECONDS = 60;
+const API_KEY = '2a4f75e7ac73979b61b5469c8447c642';
 
 const WeatherWidget: React.FC<WeatherWidgetProps> = ({ cities, className }) => {
   const [selectedCities, setSelectedCities] = useState<string[]>([]);

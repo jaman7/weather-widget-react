@@ -21,3 +21,8 @@ export const MapConsts = {
   noPadding: { padding: [0, 0, 0, 0] },
   tileLayerIndex: 1,
 };
+
+export const Colors = {
+  orange: '#eb6e4b',
+  blue: '#0834c4',
+};
