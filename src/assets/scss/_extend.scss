@@ -47,3 +47,11 @@
     }
   }
 }
+
+%textshadownocolor {
+  text-shadow: 1px 1px 2px rgb(0 0 0 / 30%);
+
+  @include mq(maxmd) {
+    text-shadow: 1px 1px 2px rgb(0 0 0 / 40%);
+  }
+}

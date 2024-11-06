@@ -5,6 +5,7 @@ import { IWeatherData, IWeatherResponse } from './weatherWidget.model';
 import './WeatherWidget.scss';
 import axios from 'axios';
 import { toHttpParams } from 'core/http/http.utils';
+import LazyImage from 'common/LazyImage';
 
 interface WeatherWidgetProps {
   cities: string[];
@@ -13,7 +14,7 @@ interface WeatherWidgetProps {
 
 const REFRESH_INTERVAL_SECONDS = 10;
 const CITY_SELECTION_INTERVAL_SECONDS = 60;
-const API_KEY = '2a4f75e7ac73979b61b5469c8447c642';
+const API_KEY = 'ae98d58d517252f2065829367d320dbb';
 
 const WeatherWidget: React.FC<WeatherWidgetProps> = ({ cities, className }) => {
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
@@ -105,7 +106,7 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({ cities, className }) => {
         <div className={'widget'} key={city.id} onClick={() => openCity(city.id)}>
           <h3 className="city">{city.city}</h3>
           <div className="flex-center">
-            <img className="img-fluid" src={city.icon} alt={city.description} />
+            <LazyImage src={city.icon} alt={city.description} />
           </div>
           <span className="temperature">{city.temp?.toFixed(1)}°C</span>
           <span className="description">{city.description}</span>

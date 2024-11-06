@@ -6,7 +6,7 @@ import VectorImageLayer from 'ol/layer/VectorImage';
 import { OSM } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
 import { defaults as defaultControls } from 'ol/control';
-import { MapProvider, useMapContext } from './MapContext';
+import { ISearchData, MapProvider, useMapContext } from './MapContext';
 import CoordinatePosition from './components/CoordinatePosition';
 import Scaleline from './components/Scaleline';
 import MapLegend from './components/map-legend/MapLegend';
@@ -18,9 +18,10 @@ import { ViewOptions } from './map.constants';
 
 interface MapComponentProps {
   height?: string;
+  setSearchData?: (data: ISearchData) => void;
 }
 
-const MapComponent: React.FC<MapComponentProps> = ({ height = '50vh' }) => {
+const MapComponent: React.FC<MapComponentProps> = ({ setSearchData, height = '50vh' }) => {
   const [viewMap, setMapView] = useState<OlMap | null>(null);
   const mapRef = useRef<HTMLDivElement>(null);
 
@@ -31,6 +32,8 @@ const MapComponent: React.FC<MapComponentProps> = ({ height = '50vh' }) => {
   const vectorSource = new VectorSource();
 
   const vectorLayerTop = new VectorImageLayer({ source: vectorSource });
+
+  const { searchData } = useMapContext();
 
   useEffect(() => {
     if (mapRef.current && !viewMap) {
@@ -73,6 +76,12 @@ const MapComponent: React.FC<MapComponentProps> = ({ height = '50vh' }) => {
       }
     }
   }, [selectedTileLayerBackground, viewMap]);
+
+  useEffect(() => {
+    if (searchData) {
+      setSearchData?.(searchData);
+    }
+  }, [searchData]);
 
   return (
     <div className="map-component" style={{ height }}>

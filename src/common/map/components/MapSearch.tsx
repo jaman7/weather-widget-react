@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { Map as OlMap } from 'ol';
 import { fromLonLat } from 'ol/proj';
 import HttpService from 'core/http/http.service';
@@ -10,58 +10,71 @@ import { Circle as CircleGeom } from 'ol/geom';
 import { Style } from 'ol/style';
 import { Colors } from '../map.constants';
 import { styleFill, styleStroke } from '../map.helpers';
+import { useMapContext } from '../MapContext';
 
 interface MapSearchProps {
   viewMap: OlMap;
 }
 
-interface ISuggestion {
-  displayName: string;
-  lon: string;
-  lat: string;
-}
-
-const BASE_URL = 'https://nominatim.openstreetmap.org';
+const BASE_URL = 'https://api.mapbox.com/search/geocode/v6/forward';
+const MAPBOX_TOKEN = 'pk.eyJ1IjoiamFtYW43IiwiYSI6ImNqbmV0bTFrczBrZG8zcm80Y2h4ZGF1ajQifQ.8aCc8P2-eq4hqman9k0E7g';
 
 const MapSearch: React.FC<MapSearchProps> = ({ viewMap }) => {
   const [query, setQuery] = useState('');
-  const [suggestions, setSuggestions] = useState<ISuggestion[]>([]);
+  const [suggestions, setSuggestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
+  const [isSelecting, setIsSelecting] = useState(false);
 
-  const http = new HttpService(BASE_URL);
+  const http = useMemo(() => new HttpService(BASE_URL), []);
+  const { setSearchData } = useMapContext();
 
-  const getCurrentVectorImageLayer = (): VectorImageLayer | null => {
-    let currentLayer = null;
-    viewMap.getLayers().forEach((layer) => {
-      if (layer instanceof VectorImageLayer) {
-        currentLayer = layer;
-      }
-    });
-    return currentLayer;
-  };
+  const getCurrentVectorImageLayer = useCallback((): VectorImageLayer | null => {
+    return (
+      viewMap
+        .getLayers()
+        .getArray()
+        .find((layer) => layer instanceof VectorImageLayer) || null
+    );
+  }, [viewMap]);
 
   const fetchSuggestions = useCallback(
     debounce(async (searchTerm: string) => {
-      setLoading(true);
-      setError('');
-      const params = {
-        q: searchTerm,
-        format: 'json',
-      };
-      http
-        .get<any[]>(`${BASE_URL}/search`, params)
-        .then((data) => {
-          setSuggestions?.(data?.map((el) => ({ ...el, displayName: el.display_name })) ?? []);
-        })
-        .catch((error) => {
-          console.error('Error fetching location data:', error);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      if (!isSelecting) {
+        setLoading(true);
+        setError('');
+        const params = {
+          q: searchTerm,
+          limit: 10,
+          access_token: MAPBOX_TOKEN,
+        };
+        if (searchTerm) {
+          http
+            .get<any>(`${BASE_URL}`, params)
+            .then((data: any) => {
+              const { features } = data || {};
+              const preData =
+                features?.map((item: any) => {
+                  const { id, geometry, properties } = item || {};
+                  return {
+                    id,
+                    geometry,
+                    properties,
+                    displayName: properties?.full_address,
+                  };
+                }) ?? [];
+              setSuggestions(preData ?? []);
+            })
+            .catch(() => {
+              setError('Failed to fetch suggestions.');
+            })
+            .finally(() => {
+              setLoading(false);
+            });
+        }
+      }
     }, 300),
-    []
+    [isSelecting]
   );
 
   useEffect(() => {
@@ -70,36 +83,31 @@ const MapSearch: React.FC<MapSearchProps> = ({ viewMap }) => {
     } else {
       setSuggestions?.([]);
     }
-  }, [query, fetchSuggestions]);
+  }, [query, fetchSuggestions, isSelecting]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsSelecting(false);
     setQuery?.(e.target.value);
   };
 
-  const handleSelectSuggestion = (suggestion: ISuggestion) => {
-    const { lon, lat } = suggestion || {};
+  const handleSelectSuggestion = (suggestion: any) => {
+    const { longitude, latitude } = suggestion?.properties?.coordinates || {};
     const view = viewMap.getView();
-    const targetCoordinates = fromLonLat([parseFloat(lon), parseFloat(lat)]);
-
+    const targetCoordinates = fromLonLat([parseFloat(longitude), parseFloat(latitude)]);
     const currentLayer = getCurrentVectorImageLayer();
     const vectorSource = currentLayer?.getSource();
-
     vectorSource?.clear();
-
     const radius = 500;
     const circleFeature = new Feature({
       geometry: new CircleGeom(targetCoordinates, radius),
     });
-
     circleFeature.setStyle(
       new Style({
         fill: styleFill(Colors.blue, 0.1),
         stroke: styleStroke(Colors.blue),
       })
     );
-
     vectorSource?.addFeature(circleFeature);
-
     view.animate({
       center: targetCoordinates,
       zoom: 15,
@@ -107,13 +115,16 @@ const MapSearch: React.FC<MapSearchProps> = ({ viewMap }) => {
       easing: (t) => t * (2 - t),
     });
 
-    setSuggestions([]);
+    setIsSelecting(true);
     setQuery(suggestion.displayName);
+    setSearchData({ longitude, latitude, city: suggestion?.properties?.name ?? '' });
+    setSuggestions([]);
   };
 
   const handleClearInput = () => {
     setQuery?.('');
     setSuggestions?.([]);
+    setSearchData?.(null);
     getCurrentVectorImageLayer()?.getSource()?.clear();
   };
 
@@ -127,8 +138,8 @@ const MapSearch: React.FC<MapSearchProps> = ({ viewMap }) => {
       {error && <div className="error">{error}</div>}
       {suggestions?.length > 0 && (
         <ul className="suggestions-list scroll">
-          {suggestions?.map((suggestion, index) => (
-            <li key={index} onClick={() => handleSelectSuggestion(suggestion)}>
+          {suggestions?.map((suggestion) => (
+            <li key={suggestion?.id} onClick={() => handleSelectSuggestion(suggestion)}>
               {suggestion.displayName}
             </li>
           ))}

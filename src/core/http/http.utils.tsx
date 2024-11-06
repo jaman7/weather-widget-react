@@ -1,4 +1,3 @@
-import { createSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 export function preparedHttpParamsValue(value: any): string {
@@ -10,7 +9,18 @@ export function preparedHttpParamsValue(value: any): string {
   return value.toString();
 }
 
-export function toHttpParams(data: any): URLSearchParams {
-  if (!data) return new URLSearchParams();
-  return createSearchParams(data);
+export function toHttpParams<T>(data: T): URLSearchParams {
+  const params = new URLSearchParams();
+  if (!data) return params;
+
+  Object.entries(data).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      params.append(key, value.join(','));
+      console.log(value.join(','));
+    } else if (value !== undefined && value !== null) {
+      params.append(key, String(value));
+    }
+  });
+
+  return params;
 }
