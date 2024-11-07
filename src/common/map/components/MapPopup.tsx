@@ -9,10 +9,10 @@ import Style from 'ol/style/Style';
 import Icon from 'ol/style/Icon';
 import { toLonLat } from 'ol/proj';
 import HttpService from 'core/http/http.service';
-import { API_KEY } from 'common/map/map.constants';
 import { IoMdClose } from 'react-icons/io';
 import BaseLayer from 'ol/layer/Base';
 import Button from 'common/button/Button';
+import { API_URL } from '../map.constants';
 
 interface MapPopupProps {
   viewMap: OlMap | null;
@@ -26,7 +26,8 @@ interface IWeatherData {
   pressure?: number;
 }
 
-const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
+const API_KEY = import.meta.env.VITE_API_KEY;
+const BASE_URL = `${API_URL}/weather`;
 
 const MapPopup: React.FC<MapPopupProps> = ({ viewMap }) => {
   const popupEl = useRef<HTMLDivElement>(null);

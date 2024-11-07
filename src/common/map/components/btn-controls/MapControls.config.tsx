@@ -4,8 +4,8 @@ import { ButtonsControl, MapButtonsTooltip } from './MapControls.enums';
 import { ISidebarConfig } from './MapControls.models';
 import { FaHome, FaPlusCircle, FaMinusCircle } from 'react-icons/fa';
 import { IconType } from 'react-icons';
-import { API_KEY } from 'common/map/map.constants';
 
+const API_KEY = import.meta.env.VITE_API_KEY;
 const { BTN_HOME, BTN_ZOOM_IN, BTN_ZOOM_OUT } = ButtonsControl;
 const { HOME_TOOLTIP, ZOOM_IN_TOOLTIP, ZOOM_OUT_TOOLTIP } = MapButtonsTooltip;
 

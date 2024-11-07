@@ -4,14 +4,14 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ISearchData } from 'common/map/MapContext';
 import axios from 'axios';
 import { toHttpParams } from 'core/http/http.utils';
-import { API_KEY } from 'common/map/map.constants';
 import { sunsetSunrise } from 'utils/utils';
 import CurrentWeather from './home-parts/CurrentWeather';
 import { IWeatherData } from './Home.model';
 import ForecastWeather from './home-parts/ForecastWeather';
+import { API_URL } from 'common/map/map.constants';
 import './Home.scss';
 
-export const API_URL = 'https://api.openweathermap.org/data/2.5';
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 const Home = () => {
   const [searchData, setSearchData] = useState<ISearchData | null>(null);

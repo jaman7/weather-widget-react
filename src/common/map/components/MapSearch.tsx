@@ -17,7 +17,7 @@ interface MapSearchProps {
 }
 
 const BASE_URL = 'https://api.mapbox.com/search/geocode/v6/forward';
-const MAPBOX_TOKEN = 'pk.eyJ1IjoiamFtYW43IiwiYSI6ImNqbmV0bTFrczBrZG8zcm80Y2h4ZGF1ajQifQ.8aCc8P2-eq4hqman9k0E7g';
+const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_API_KEY;
 
 const MapSearch: React.FC<MapSearchProps> = ({ viewMap }) => {
   const [query, setQuery] = useState('');

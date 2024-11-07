@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import ProgressCircle from './ProgressCircle';
-import { API_URL } from './WeatherWidget.const';
 import { IWeatherData, IWeatherResponse } from './weatherWidget.model';
-import './WeatherWidget.scss';
 import axios from 'axios';
 import { toHttpParams } from 'core/http/http.utils';
 import LazyImage from 'common/LazyImage';
+import { API_URL } from 'common/map/map.constants';
+import './WeatherWidget.scss';
 
 interface WeatherWidgetProps {
   cities: string[];
@@ -14,7 +14,7 @@ interface WeatherWidgetProps {
 
 const REFRESH_INTERVAL_SECONDS = 10;
 const CITY_SELECTION_INTERVAL_SECONDS = 60;
-const API_KEY = 'ae98d58d517252f2065829367d320dbb';
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 const WeatherWidget: React.FC<WeatherWidgetProps> = ({ cities, className }) => {
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
@@ -42,7 +42,7 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({ cities, className }) => {
           appid: API_KEY,
           units: 'metric',
         });
-        return axios.get<IWeatherResponse>(`${API_URL}?${queryParams}`);
+        return axios.get<IWeatherResponse>(`${API_URL}/weather?${queryParams}`);
       });
 
       const responses = await axios.all(requests);
