@@ -1,6 +1,7 @@
 import LazyImage from 'common/LazyImage';
 import { days, months } from '../home.constants';
 import { IWeatherData } from 'view/Home.model';
+import { memo } from 'react';
 interface IProps {
   weatherData?: IWeatherData | null;
 }
@@ -10,6 +11,7 @@ const CurrentWeather: React.FC<IProps> = ({ weatherData }) => {
 
   const currentDate = new Date();
   const date = `${days[currentDate.getDay()]} ${currentDate.getDate()} ${months[currentDate.getMonth()]}`;
+  const temperature = Math.floor((main?.temp as number) ?? 0);
 
   const details = [
     { label: 'Temp Max', value: `${Math.floor((main?.temp_max as number) ?? null)}°` },
@@ -35,8 +37,8 @@ const CurrentWeather: React.FC<IProps> = ({ weatherData }) => {
             <LazyImage src={`https://openweathermap.org/img/wn/${weather?.[0]?.icon}.png`} alt={weather?.[0]?.description ?? ''} />
           </div>
           <div className="temp-column">
-            <p className="temperature">{Math.floor((main?.temp as number) ?? null)}&#176;</p>
-            <p className="desc">{weather?.[0]?.description ?? ''}</p>
+            <p className="temperature">{temperature}&#176;</p>
+            <p className="desc">{weather?.[0]?.description || 'No description'}</p>
           </div>
         </div>
 
@@ -53,4 +55,4 @@ const CurrentWeather: React.FC<IProps> = ({ weatherData }) => {
   );
 };
 
-export default CurrentWeather;
+export default memo(CurrentWeather);

@@ -1,0 +1,365 @@
+CurrentWeather.tsx
+import LazyImage from 'common/LazyImage';
+import { days, months } from '../home.constants';
+import { IWeatherData } from 'view/Home.model';
+import { memo } from 'react';
+interface IProps {
+  weatherData?: IWeatherData | null;
+}
+
+const CurrentWeather: React.FC<IProps> = ({ weatherData }) => {
+  const { name, sys, main, weather, wind, sunrise, sunset } = weatherData || {};
+
+  const currentDate = new Date();
+  const date = `${days[currentDate.getDay()]} ${currentDate.getDate()} ${months[currentDate.getMonth()]}`;
+
+  const details = [
+    { label: 'Temp Max', value: `${Math.floor((main?.temp_max as number) ?? null)}°` },
+    { label: 'Temp Min', value: `${Math.floor((main?.temp_min as number) ?? null)}°` },
+    { label: 'Wind', value: `${wind?.speed ?? null} m/s` },
+    { label: 'Humidity', value: `${main?.humidity ?? null}%` },
+    { label: 'Sunrise', value: sunrise },
+    { label: 'Sunset', value: sunset },
+  ];
+
+  return (
+    <>
+      <div className="current-weather">
+        <div className="column first-column">
+          <h2>
+            {name ?? ''}, {sys?.country ?? ''}
+          </h2>
+          <span>{date}</span>
+        </div>
+
+        <div className="column second-column">
+          <div className="icon-column">
+            <LazyImage src={`https://openweathermap.org/img/wn/${weather?.[0]?.icon}.png`} alt={weather?.[0]?.description ?? ''} />
+          </div>
+          <div className="temp-column">
+            <p className="temperature">{Math.floor((main?.temp as number) ?? null)}&#176;</p>
+            <p className="desc">{weather?.[0]?.description ?? ''}</p>
+          </div>
+        </div>
+
+        <div className="column third-column">
+          {details?.map(({ label, value }) => (
+            <div key={label} className="weather-detail">
+              <p className="detail-value">{value}</p>
+              <p className="detail-label">{label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default memo(CurrentWeather);
+
+
+ForecastWeather.tsx
+import LazyImage from 'common/LazyImage';
+import React, { memo, useRef, useState } from 'react';
+import Chart from 'react-apexcharts';
+import { IForecast } from 'view/Home.model';
+
+interface IProps {
+  forecast: IForecast[];
+}
+
+const ForecastWeather: React.FC<IProps> = ({ forecast }) => {
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const forecastTilesRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setStartX(e.pageX - forecastTilesRef.current!.offsetLeft);
+    setScrollLeft(forecastTilesRef.current!.scrollLeft);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging) return;
+    const x = e.pageX - forecastTilesRef.current!.offsetLeft;
+    const scroll = (x - startX) * 2; // adjust scroll speed
+    forecastTilesRef.current!.scrollLeft = scrollLeft - scroll;
+  };
+
+  const labels = forecast.map((f) => new Date((f?.dt as number) * 1000)?.toLocaleString('en-US', { weekday: 'short', hour: 'numeric' }));
+  const temperatureData = forecast.map((f) => f?.main?.temp ?? null);
+
+  const chartOptions: ApexCharts.ApexOptions = {
+    chart: {
+      type: 'line' as const,
+      zoom: { enabled: false },
+      toolbar: { show: false },
+    },
+    stroke: { curve: 'smooth', width: 2 },
+    xaxis: { categories: labels },
+    yaxis: { title: { text: 'Temperature (°C)' } },
+    markers: { size: 5, colors: ['#FF4560'] },
+    fill: {
+      type: 'gradient',
+      gradient: { shade: 'light', type: 'vertical', opacityFrom: 0.7, opacityTo: 0.4 },
+    },
+    tooltip: { shared: true, intersect: false },
+  };
+
+  const chartSeries: ApexAxisChartSeries = [
+    {
+      name: 'Temperature',
+      data: temperatureData as (number | null)[],
+    },
+  ];
+
+  return (
+    <>
+      <div className="forecast-weather">
+        <h2>5-Day Forecast</h2>
+
+        <div
+          className="forecast-tiles"
+          ref={forecastTilesRef}
+          onMouseDown={handleMouseDown}
+          onMouseLeave={handleMouseLeave}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+        >
+          {forecast?.map((entry, index) => (
+            <div key={index} className="forecast-tile">
+              <h3>{new Date((entry?.dt as number) * 1000).toLocaleString('en-US', { weekday: 'short', hour: 'numeric' })}</h3>
+              <p>{entry?.weather?.[0]?.description}</p>
+              <LazyImage
+                src={`https://openweathermap.org/img/wn/${entry?.weather?.[0]?.icon}.png`}
+                alt={entry?.weather?.[0]?.description ?? ''}
+              />
+              <p className="temperature">{Math.round(entry?.main?.temp ?? 0)}°C</p>
+              <p>Feels like: {Math.round((entry?.main?.feels_like as number) ?? null)}°C</p>
+              <p>Wind: {entry?.wind?.speed} m/s</p>
+              <p>Humidity: {entry?.main?.humidity}%</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="temperature-chart">
+        <Chart options={chartOptions} series={chartSeries} type="line" height={300} />
+      </div>
+    </>
+  );
+};
+
+export default memo(ForecastWeather);
+
+
+home.constants.tsx
+export const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
+export const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+
+Home.model.tsx
+export interface ICoord {
+  lon?: number;
+  lat?: number;
+}
+
+export interface IWeather {
+  id?: number;
+  main?: string;
+  description?: string;
+  icon?: string;
+}
+
+export interface IWeatherMain {
+  temp?: number;
+  feels_like?: number;
+  temp_min?: number;
+  temp_max?: number;
+  pressure?: number;
+  humidity?: number;
+}
+
+export interface IWeatherWind {
+  speed?: number;
+  deg?: number;
+}
+
+export interface IWeatherSys {
+  type?: number;
+  id?: number;
+  country?: string;
+  sunrise?: number;
+  sunset?: number;
+}
+
+export interface IWeatherCity {
+  id?: number;
+  name?: string;
+  country?: string;
+  coord?: ICoord;
+}
+
+export interface IWeatherClouds {
+  all?: number;
+}
+
+export interface IForecast {
+  dt?: number;
+  main?: IWeatherMain;
+  weather?: IWeather[];
+  clouds?: IWeatherClouds;
+  wind?: IWeatherWind;
+  visibility?: number;
+  pop?: number;
+  dt_txt?: string;
+}
+
+export interface IWeatherData {
+  coord?: ICoord;
+  weather?: IWeather[];
+  base?: string;
+  main?: IWeatherMain;
+  visibility?: number;
+  wind?: IWeatherWind;
+  clouds?: IWeatherClouds;
+  dt?: number;
+  sys?: IWeatherSys;
+  timezone?: number;
+  id?: number;
+  name?: string;
+  cod?: number;
+  city?: IWeatherCity;
+  sunrise?: string;
+  sunset?: string;
+  forecast?: IForecast[];
+}
+
+
+Home.scss
+.banner {
+  background: url("https://openweathermap.org/themes/openweathermap/assets/img/autumn_banner_main_page.jpg") no-repeat;
+  background-position-x: 0%;
+  background-position-y: 0%;
+  background-size: auto;
+  background-size: cover;
+  background-position: center;
+  min-height: 250px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &-content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
+.weather-map-img {
+  background: url("https://openweathermap.org/themes/openweathermap/assets/img/Open-weather-main-page.png") no-repeat;
+  background-size: cover;
+  min-height: 200px;
+}
+
+
+Home.tsx
+import WeatherWidget from 'common/weather-widget/WeatherWidget';
+import WrappedMapComponent from 'common/map/MapComponent';
+import { useCallback, useEffect, useState } from 'react';
+import { ISearchData } from 'common/map/MapContext';
+import axios from 'axios';
+import { toHttpParams } from 'core/http/http.utils';
+import { API_KEY } from 'common/map/map.constants';
+import { sunsetSunrise } from 'utils/utils';
+import CurrentWeather from './home-parts/CurrentWeather';
+import { IWeatherData } from './Home.model';
+import './Home.scss';
+import ForecastWeather from './home-parts/ForecastWeather';
+
+export const API_URL = 'https://api.openweathermap.org/data/2.5';
+
+const Home = () => {
+  const [searchData, setSearchData] = useState<ISearchData | null>(null);
+  const [weatherData, setWeatherData] = useState<IWeatherData | null>(null);
+  const cities = ['Lodz', 'Warszawa', 'Berlin', 'New York', 'London'];
+
+  const fetchWeatherData = useCallback(() => {
+    if (!searchData) return;
+
+    const { city, latitude, longitude } = searchData;
+    const paramOpts = { appid: API_KEY, units: 'metric' };
+    const param1 = toHttpParams({ q: city, ...paramOpts });
+    const param2 = toHttpParams({ lat: latitude, lon: longitude, ...paramOpts });
+
+    axios
+      .all([axios.get<any>(`${API_URL}/weather?${param1}`), axios.get<any>(`${API_URL}/forecast?${param2}`)])
+      .then(([weather, forecast]) => {
+        const sunset = sunsetSunrise(weather?.data?.sys?.sunset);
+        const sunrise = sunsetSunrise(weather?.data?.sys?.sunrise);
+
+        setWeatherData({
+          ...weather?.data,
+          sunrise,
+          sunset,
+          city: forecast?.data?.city,
+          forecast: forecast?.data?.list,
+        });
+      })
+      .catch(console.error);
+  }, [searchData]);
+
+  useEffect(() => {
+    fetchWeatherData();
+  }, [fetchWeatherData]);
+
+  return (
+    <>
+      <div className="section banner">
+        <div className="banner-content">
+          <h1 className="orange-text">OpenWeather</h1>
+        </div>
+      </div>
+
+      <div className="section px-0">
+        <div className="grid-container grid-1-1 gap-0">
+          <div className="weather-map-img"></div>
+          <WeatherWidget cities={cities} className="p-3" />
+        </div>
+      </div>
+
+      <WrappedMapComponent height="50vh" setSearchData={setSearchData} />
+
+      {weatherData && <CurrentWeather weatherData={weatherData} />}
+
+      {weatherData && weatherData?.forecast?.length && <ForecastWeather forecast={weatherData.forecast} />}
+    </>
+  );
+};
+
+export default Home;
+
+

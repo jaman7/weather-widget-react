@@ -11,6 +11,9 @@ body {
   -webkit-font-smoothing: subpixel-antialiased !important;
   color: var(--color-primary);
   font-size: 16px;
+  overflow-y: scroll;
+
+  @extend %scrol-v;
 }
 
 a {
