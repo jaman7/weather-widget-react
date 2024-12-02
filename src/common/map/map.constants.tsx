@@ -17,7 +17,7 @@ export const ViewOptions = {
 
 export const MapConsts = {
   targetClassName: 'ol-map',
-  paddingOfCenterCluster: { padding: [30, 30, 30, 30] },
+  paddingOfCenterCluster: { padding: [25, 25, 25, 25] },
   noPadding: { padding: [0, 0, 0, 0] },
   tileLayerIndex: 1,
 };
